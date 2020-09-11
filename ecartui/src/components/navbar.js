@@ -14,12 +14,23 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { withStyles } from '@material-ui/core/styles';
-
+import { blue, green, purple } from '@material-ui/core/colors';
+import { Button, Grid } from '@material-ui/core';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 const useStyles = theme => ({
+  palette: {
+    type: 'dark',
+    appbarcolor:{
+      main:"#263238"
+    }
+  },
+  navbar:{
+      backgroundColor:"#263238"
+  },
     grow: {
       flexGrow: 1,
     },
@@ -35,29 +46,26 @@ const useStyles = theme => ({
     search: {
       position: 'relative',
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
+      backgroundColor: theme.palette.common.white,
+      // '&:hover': {
+      //   backgroundColor: fade(theme.palette.common.white, 0.85),
+      // },
       marginRight: theme.spacing(2),
       marginLeft: 0,
-      width: '100%',
       [theme.breakpoints.up('sm')]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        width: '620px',
+        height:'42px'
       },
     },
-    searchIcon: {
-      padding: theme.spacing(0, 2),
+    searchBtn: {
       height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+      position:'absolute',
+      backgroundColor:"#ffac33",
+      weidth:"10px"
     },
     inputRoot: {
-      color: 'inherit',
+      color: "#263238",
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
@@ -66,7 +74,7 @@ const useStyles = theme => ({
       transition: theme.transitions.create('width'),
       width: '100%',
       [theme.breakpoints.up('md')]: {
-        width: '20ch',
+        width: '500px',
       },
     },
     sectionDesktop: {
@@ -75,12 +83,13 @@ const useStyles = theme => ({
         display: 'flex',
       },
     },
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
+    iconBtn:{
+      marginRight:theme.spacing(3),
+      marginLeft:theme.spacing(3),
     },
+    apppbarText:{
+      color:"#b0bec5"
+    }
   });
 
 class Navbar extends Component{
@@ -89,7 +98,7 @@ class Navbar extends Component{
         const { classes } = this.props;
         return(
             <div className={classes.grow}>
-                <AppBar position="static">
+                <AppBar position="static" className={classes.navbar}>
                     <Toolbar>
                         <IconButton
                             edge="start"
@@ -99,56 +108,62 @@ class Navbar extends Component{
                         >
                         <MenuIcon />
                         </IconButton>
-                        <Typography className={classes.title} variant="h6" noWrap>
-                             {/* Material-UI */}
-                             {this.props.login?
-                                <div>{this.props.user.customerProfile.customerName}</div> :
-                                <div>Material-UI</div>
-                            }
-                             
+                        <Typography className={classes.title} variant="h4" noWrap>
+                              Bazzer.com
                         </Typography>
                         <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
                             <InputBase
-                                placeholder="Search…"
                                 classes={{
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
                                 }}
                                 inputProps={{ 'aria-label': 'search' }}
                             />
+                            <Button className={classes.searchBtn} endIcon>
+                                <SearchIcon />
+                            </Button>
                         </div>
                         <div className={classes.grow} />
                             <div className={classes.sectionDesktop}>
-                                <IconButton aria-label="show 4 new mails" color="inherit">
-                                    <Badge badgeContent={4} color="secondary">
-                                        <MailIcon />
-                                    </Badge>
-                                </IconButton>
-                                <IconButton aria-label="show 17 new notifications" color="inherit">
-                                    <Badge badgeContent={17} color="secondary">
-                                        <NotificationsIcon />
-                                    </Badge>
-                                </IconButton>
-                                 <IconButton
-                                     edge="end"
-                                    aria-label="account of current user"
-                                    //aria-controls={menuId}
-                                    aria-haspopup="true"
-                                    //onClick={handleProfileMenuOpen}
-                                    color="inherit"
-                                >
-                                    <AccountCircle />
-                                </IconButton>
+                            {this.props.login?
+                                <div className={classes.iconBtn}>
+                                   <IconButton
+                                      aria-label="account of current user"
+                                      aria-haspopup="true"
+                                      color="inherit"
+                                  >
+                                    <Grid container spacing={3}>
+                                        <Grid item xs={12}>
+                                            <Typography variant="caption" display="block" className={classes.apppbarText}>
+                                                  Hello, {this.props.user.customerProfile.customerName}
+                                            </Typography>
+                                            <Typography variant="subtitle1" display="block">
+                                                Account & List<ArrowDropDownIcon/>
+                                            </Typography>
+                                          </Grid>
+                                    </Grid>
+                                 </IconButton>
+                                </div>:
+                                  <div className={classes.iconBtn}>
+                                      please Login
+                                  </div>}
+
+                                  <div className={classes.iconBtn}>
+                                      <IconButton
+                                          edge="end"
+                                          aria-label="account of current user"
+                                          aria-haspopup="true"
+                                          color="inherit"
+                                      >
+                                          <ShoppingCartIcon  fontSize="large"/>
+                                      </IconButton>
+                                  </div>
+                                 
                             </div>
                             <div className={classes.sectionMobile}>
                                 <IconButton
                                     aria-label="show more"
-                                    //aria-controls={mobileMenuId}
                                     aria-haspopup="true"
-                                    //onClick={handleMobileMenuOpen}
                                     color="inherit"
                                 >
                                     <MoreIcon />
